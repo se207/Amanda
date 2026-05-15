@@ -1,122 +1,448 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Amanda</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>大氣組互動試題</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand-row">
+        <div class="logos">
+          <div class="logo">地球科學學科中心</div>
+          <div class="logo">芳瑩老師辦公室</div>
+        </div>
+        <div class="top-actions">
+          <h1>大氣組互動試題</h1>
+          <input id="studentName" class="student-input" type="text" placeholder="學生代號" />
+          <button class="logo credits-logo" id="creditsBtn" title="製作人員名單">製作人員名單</button>
         </div>
       </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Amanda</div>
+      <nav class="tabs" id="tabs"></nav>
+    </header>
+
+    <main>
+      <section class="module active" data-module="0">
+        <div class="module-title">
+          <div>
+            <h2>題目 1｜基礎數據讀取與飽和判斷</h2>
+            <div class="stage">第一階段：觀測數據與飽和規律（基礎層次）</div>
+          </div>
+        </div>
+        <div class="work-grid">
+          <div class="question-box q1-panel">
+            <div class="q-card active" data-q1-page="0">
+              <h3>題目 1-a：</h3>
+              <p>依照你在操作中觀察到的數據，空氣塊在 <input id="q1height" class="inline-answer" type="number" placeholder="高度" /> 高度開始達到飽和並形成雲。</p>
+            </div>
+            <div class="q-card" data-q1-page="1">
+              <h3>題目 1-b：</h3>
+              <p>觀察空氣塊達到飽和前後，空氣塊的降溫速率變化。</p>
+              <div class="rate-line">
+                <span>達到飽和前降溫速率</span>
+                <select id="q1rate">
+                  <option value="">填入大於、等於、小於</option>
+                  <option>大於</option>
+                  <option>等於</option>
+                  <option>小於</option>
+                </select>
+                <span>達到飽和後降溫速率</span>
+              </div>
+            </div>
+            <div class="q-card" data-q1-page="2">
+              <h3>題目 1-c：</h3>
+              <p>試著由你所到的數據，解釋為何空氣塊達到飽和前後的冷卻速率不同？</p>
+              <textarea id="q1why" placeholder="輸入你的猜想"></textarea>
+            </div>
+            <div class="q-card answer-card" data-q1-page="3">
+              <h3>題目 1-c 參考答案</h3>
+              <p>空氣塊抬升過程中降溫，當溫度降至與露點溫度相同時，便會凝結成雲。尚未達到飽和前的降溫速率較快，約為 10°C/km；達到飽和後的降溫速率較慢，約為 6°C/km。</p>
+            </div>
+            <div class="operation-box">
+              <strong>操作指引：</strong>
+              <p>請將空氣塊（Air Mass）沿著山坡拖曳，並觀察數據變化。</p>
+            </div>
+            <div class="q1-data-grid">
+              <div class="stat"><span id="q1temp">30°C</span><b>氣溫 (T)</b></div>
+              <div class="stat"><span id="q1dew">20°C</span><b>露點 (Td)</b></div>
+              <div class="stat"><span id="q1h">0 km</span><b>高度 (H)</b></div>
+              <div class="stat"><span id="q1x">0 km</span><b>水平位置</b></div>
+            </div>
+            <div class="answer" id="q1Answer"></div>
+            <div class="nav-row q1-arrows">
+              <button class="small-btn" id="q1Prev">上一頁</button>
+              <button class="primary-btn" id="q1Next">下一頁</button>
+            </div>
+          </div>
+          <div class="viz">
+            <div class="scene">
+              <svg id="q1svg" viewBox="0 0 780 390" aria-label="山坡與空氣塊">
+                <defs>
+                  <linearGradient id="skyGrad" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#d7f3ff"/>
+                    <stop offset="1" stop-color="#f5fbff"/>
+                  </linearGradient>
+                </defs>
+                <rect width="780" height="390" fill="#e8f8ff"/>
+                <g stroke="#c7c7c7" stroke-width="1">
+                  <path d="M70 92 H720 M70 152 H720 M70 212 H720 M70 272 H720 M70 332 H720"/>
+                  <path d="M130 92 V332 M190 92 V332 M250 92 V332 M310 92 V332 M370 92 V332 M430 92 V332 M490 92 V332 M550 92 V332 M610 92 V332 M670 92 V332"/>
+                </g>
+                <path d="M70 332 L190 332 L430 92 L720 92 L720 332 Z" fill="#eeeeee"/>
+                <path d="M70 332 L190 332 L430 92" fill="none" stroke="#646464" stroke-width="5" stroke-linecap="round"/>
+                <line x1="70" y1="332" x2="70" y2="92" stroke="#1f2933" stroke-width="4"/>
+                <g fill="#1f4e9e" font-size="15" font-weight="700">
+                  <text x="24" y="336">0</text><text x="24" y="276">1</text><text x="24" y="216">2</text><text x="24" y="156">3</text><text x="24" y="96">4</text>
+                  <text x="80" y="78">高度 (km)</text>
+                </g>
+                <g id="q1Clouds"></g>
+                <g id="q1Parcel" class="parcel">
+                  <circle r="22" fill="#f5b54c" stroke="#b27820" stroke-width="3"/>
+                  <text text-anchor="middle" y="5" font-size="13" font-weight="800" fill="#573400">Air</text>
+                </g>
+              </svg>
+              <div class="range-row">
+                <input id="q1range" type="range" min="0" max="5000" step="50" value="0" />
+                <span>拖曳空氣塊或調整滑桿</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="module" data-module="1">
+        <div class="module-title">
+          <div>
+            <h2>題目 2｜互動觀察：飽和曲線的動態位移</h2>
+            <div class="stage">第一階段：觀測數據與飽和規律（基礎層次）</div>
+          </div>
+        </div>
+        <div class="pdf-board q2-board">
+          <div class="q2-prompt">
+            <strong>【操作觀察引導】</strong>
+            <p>一個溫度為 30°C 的空氣塊，具有相同的飽和水氣壓。當它的水氣壓越高（相對溼度越高、越潮濕），則該空氣塊隨著地形抬升時，會有什麼不同？</p>
+            <ol>
+              <li>空氣塊的凝結高度如何改變？</li>
+              <li>露點溫度會如何改變？</li>
+              <li>空氣塊至山頂的溫度如何改變？</li>
+            </ol>
+            <div class="q2-inputs">
+              <input id="q2a" type="text" placeholder="(1) 凝結高度" />
+              <input id="q2b" type="text" placeholder="(2) 露點溫度" />
+              <input id="q2c" type="text" placeholder="(3) 山頂溫度" />
+            </div>
+          </div>
+          <div class="q2-values">
+            <div class="panel-title">指定初始空氣塊性質</div>
+            <div class="value-row">飽和水氣壓：<span id="satPressure">42.5 hPa</span></div>
+            <div class="value-row">水氣壓：<span id="vapPressure">23.4 hPa</span></div>
+            <div class="value-row">相對溼度：<span id="rhValue">55%</span></div>
+          </div>
+          <div class="q2-results">
+            <div class="panel-title green">按下開始觀察空氣塊抬升結果</div>
+            <div class="value-row">當前高度：<span id="q2ObsHeight">0 m</span></div>
+            <div class="value-row">空氣塊溫度：<span id="q2ObsTemp">30.0°C</span></div>
+            <div class="value-row">相對溼度：<span id="q2ObsRh">55%</span></div>
+          </div>
+          <div class="q2-guide">開始操作：請用滑鼠移動飽和水氣壓曲線圖上的紅點，設定初始空氣塊性質。</div>
+          <div class="q2-chart">
+            <svg id="q2ChartSvg" viewBox="0 0 360 280" aria-label="飽和水氣壓曲線">
+              <rect width="360" height="280" fill="#dff5ff"/>
+              <g stroke="#c4e0ea" stroke-width=".6">
+                <path d="M60 20 V240 M80 20 V240 M100 20 V240 M120 20 V240 M140 20 V240 M160 20 V240 M180 20 V240 M200 20 V240 M220 20 V240 M240 20 V240 M260 20 V240 M280 20 V240 M300 20 V240 M320 20 V240"/>
+                <path d="M50 20 H330 M50 40 H330 M50 60 H330 M50 80 H330 M50 100 H330 M50 120 H330 M50 140 H330 M50 160 H330 M50 180 H330 M50 200 H330 M50 220 H330 M50 240 H330"/>
+              </g>
+              <g stroke="#93c6d6" stroke-width="1">
+                <path d="M50 40 H330 M50 80 H330 M50 120 H330 M50 160 H330 M50 200 H330 M50 240 H330"/>
+                <path d="M60 20 V240 M100 20 V240 M140 20 V240 M180 20 V240 M220 20 V240 M260 20 V240 M300 20 V240"/>
+              </g>
+              <path d="M50 240 C108 238 158 229 204 198 C244 171 276 116 330 20 L330 240 Z" fill="#f7b7c4" opacity=".72"/>
+              <path id="q2SatCurve" d="M50 240 C108 238 158 229 204 198 C244 171 276 116 330 20" fill="none" stroke="#f09aaa" stroke-width="4"/>
+              <line x1="295" y1="240" x2="295" y2="42" stroke="#d99a00" stroke-width="2.5" stroke-dasharray="8 6"/>
+              <line x1="50" y1="240" x2="330" y2="240" stroke="#555" stroke-width="2"/>
+              <line x1="50" y1="240" x2="50" y2="20" stroke="#555" stroke-width="2"/>
+              <g fill="#2d2d2d" font-size="12">
+                <text x="42" y="244" text-anchor="end">0</text><text x="42" y="204" text-anchor="end">10</text><text x="42" y="164" text-anchor="end">20</text><text x="42" y="124" text-anchor="end">30</text><text x="42" y="84" text-anchor="end">40</text><text x="42" y="44" text-anchor="end">50</text>
+                <text x="50" y="258" text-anchor="middle">-40</text><text x="85" y="258" text-anchor="middle">-30</text><text x="120" y="258" text-anchor="middle">-20</text><text x="155" y="258" text-anchor="middle">-10</text><text x="190" y="258" text-anchor="middle">0</text><text x="225" y="258" text-anchor="middle">10</text><text x="260" y="258" text-anchor="middle">20</text><text x="295" y="258" text-anchor="middle">30</text><text x="330" y="258" text-anchor="middle">40</text>
+              </g>
+              <text x="190" y="276" font-size="15" font-weight="700">溫度 (°C)</text>
+              <text x="18" y="108" font-size="15" font-weight="700" transform="rotate(-90 18 108)">水氣壓(百帕)</text>
+              <g id="q2Track"></g>
+              <circle id="q2Dot" class="drag-dot" cx="295" cy="126" r="10" fill="#d43d35" stroke="#8f1c18" stroke-width="3"/>
+            </svg>
+          </div>
+          <div class="q2-mountain">
+            <div class="q2-buttons">
+              <button class="small-btn red-btn" id="q2Start">按一下開始</button>
+              <button class="small-btn" id="q2Reset">重新設定</button>
+            </div>
+            <svg id="q2svg" viewBox="0 0 580 280" aria-label="山坡空氣塊抬升">
+              <rect width="580" height="280" fill="#f8fcff"/>
+              <g stroke="#d6dce2" stroke-width="1">
+                <path d="M40 20 V240 M100 20 V240 M160 20 V240 M220 20 V240 M280 20 V240 M340 20 V240 M400 20 V240 M460 20 V240 M520 20 V240"/>
+                <path d="M40 40 H540 M40 80 H540 M40 120 H540 M40 160 H540 M40 200 H540 M40 240 H540"/>
+              </g>
+              <line x1="40" y1="240" x2="40" y2="40" stroke="#1f2933" stroke-width="3"/>
+              <g fill="#1f4e9e" font-size="13" font-weight="700">
+                <text x="18" y="244">0</text><text x="18" y="194">1</text><text x="18" y="144">2</text><text x="18" y="94">3</text><text x="18" y="44">4</text>
+                <text x="48" y="32">高度 (km)</text>
+              </g>
+              <path d="M40 240 L160 240 L250 185 L360 120 L500 42 L540 65 L540 260 L40 260 Z" fill="#eee"/>
+              <path d="M40 240 L160 240 L250 185 L360 120 L500 42 L540 65" fill="none" stroke="#646464" stroke-width="4"/>
+              <g id="q2Trail"></g>
+              <g id="q2Air" class="parcel">
+                <circle r="18" fill="#f5b54c" stroke="#b27820" stroke-width="3"/>
+                <text text-anchor="middle" y="5" font-size="11" font-weight="800" fill="#573400">Air</text>
+              </g>
+            </svg>
+          </div>
+          <div class="answer q2-answer" id="q2Answer">參考答案：水氣壓越高，相對溼度越高，露點溫度也越高；空氣塊較早達到飽和，所以凝結高度較低。較早進入濕絕熱冷卻後，到山頂時保留較高溫度。</div>
+          <div class="nav-row q2-next-row">
+            <button class="primary-btn" id="q2Next">下一頁</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="module" data-module="2">
+        <div class="module-title">
+          <div>
+            <h2>題目 3｜物理機制：大氣穩定度判斷</h2>
+            <div class="stage">第二階段：現象判斷與機制分析（中等層次）</div>
+          </div>
+        </div>
+        <div class="pdf-board q3-board">
+          <div class="q3-left">
+            <div class="q-card active q3-card">
+              <h3 id="envTitle">題目 3-a1：環境 A</h3>
+              <p id="q3Prompt">當空氣塊在環境 A 抬升至任一處時，請比較空氣塊與環境的溫度。</p>
+              <div class="inline-select-row">此時空氣塊溫度
+                <select id="q3comp"><option value="">填入大於、等於、小於</option><option>大於</option><option>小於</option><option>等於</option></select>
+                環境溫度
+              </div>
+              <div class="inline-select-row">此時空氣塊會
+                <select id="q3move"><option value="">填入上升、下降</option><option>上升</option><option>下沉</option><option>不動</option></select>
+              </div>
+              <div class="inline-select-row">此時氣層為
+                <select id="q3stable"><option value="">填入穩定、不穩定</option><option>穩定</option><option>不穩定</option><option>條件性不穩定</option></select>
+              </div>
+            </div>
+            <div class="operation-box q3-op">
+              <strong>操作指引：</strong>
+              <p>Step1→切換不同的環境</p>
+              <p>Step2→拖曳空氣塊至不同位置</p>
+              <p>Step3→比較當時空氣塊與環境的溫度</p>
+            </div>
+            <div class="answer" id="q3Answer"></div>
+            <div class="nav-row q1-arrows">
+              <button class="primary-btn" id="q3Check">下一頁</button>
+            </div>
+          </div>
+          <div class="q3-graph">
+            <div class="env-tabs q3-env-tabs" id="envTabs"></div>
+            <div class="stats q3-data q4-data">
+              <div class="stat"><b>當前高度</b><span id="q3h">0 km</span></div>
+              <div class="stat"><b>空氣塊溫度</b><span id="q3parcelTemp">30°C</span></div>
+              <div class="stat"><b>環境溫度</b><span id="q3envTemp">30°C</span></div>
+              <div class="stat"><b>判斷箭頭</b><span id="q3arrowText">放開後顯示</span></div>
+            </div>
+            <svg id="q3svg" viewBox="0 0 620 390" aria-label="環境穩定度山坡">
+              <rect width="620" height="390" fill="#e9f8ff"/>
+              <g transform="translate(78 72)">
+                <text x="-54" y="-34" font-size="14" fill="#e42b41" font-weight="700">環境 <tspan id="q3EnvAxis">A</tspan></text>
+                <text x="-50" y="-16" font-size="14" fill="#e42b41" font-weight="700">(°C)</text>
+                <text x="32" y="-34" font-size="14" font-weight="700">高度</text>
+                <text x="32" y="-16" font-size="14" font-weight="700">(km)</text>
+                <g stroke="#c7c7c7" stroke-width="1">
+                  <path d="M56 0 V280 M126 0 V280 M196 0 V280 M266 0 V280 M336 0 V280 M406 0 V280"/>
+                  <path d="M56 0 H476 M56 70 H476 M56 140 H476 M56 210 H476 M56 280 H476"/>
+                </g>
+                <line x1="56" y1="280" x2="476" y2="280" stroke="#222" stroke-width="3"/>
+                <line x1="56" y1="280" x2="56" y2="0" stroke="#222" stroke-width="3"/>
+                <g fill="#1f4e9e" font-size="14" font-weight="700">
+                  <text x="35" y="284">0</text><text x="35" y="214">1</text><text x="35" y="144">2</text><text x="35" y="74">3</text><text x="35" y="4">4</text>
+                </g>
+                <g id="q3EnvLabels" fill="#f0263b" font-size="13" font-weight="700"></g>
+                <path d="M56 280 L196 280 L476 0 L476 280 Z" fill="#eeeeee"/>
+                <path d="M56 280 L196 280 L476 0" fill="none" stroke="#646464" stroke-width="4"/>
+                <g id="q3Arrow" style="display:none">
+                  <line x1="0" y1="-44" x2="0" y2="-82" stroke="#1f6fb2" stroke-width="8" stroke-linecap="round"/>
+                  <polygon points="0,-98 -15,-74 15,-74" fill="#1f6fb2"/>
+                </g>
+                <g id="q3Parcel" class="parcel">
+                  <circle r="22" fill="#f5b54c" stroke="#b27820" stroke-width="3"/>
+                  <text text-anchor="middle" y="5" font-size="13" font-weight="800" fill="#573400">Air</text>
+                </g>
+              </g>
+            </svg>
+            <div class="range-row">
+              <input id="q3range" type="range" min="0" max="5000" step="50" value="0" />
+              <span>拖曳空氣塊或調整滑桿</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="module" data-module="3">
+        <div class="module-title">
+          <div>
+            <h2>題目 4｜焚風效應：背風面溫度計算</h2>
+            <div class="stage">第三階段：效應計算與極限推論（進階層次）</div>
+          </div>
+          <div class="env-tabs">
+            <button class="env-tab active" data-q4page="0">4-a</button>
+            <button class="env-tab" data-q4page="1">4-b</button>
+            <button class="env-tab" data-q4page="2">4-c</button>
+          </div>
+        </div>
+        <div class="pdf-board q4-board">
+          <div class="question-box q4-panel">
+            <div class="q4page" data-page="0">
+              <h3>題目 4-a</h3>
+              <p>已知一氣溫 30°C 之空氣塊從山脈左側爬升，若於迎風面海拔高度 1.25km 處飽和成雲，後翻越 4km 的山頂，下降至背風面山腳 0km 處，試問其運動過程中之氣溫變化。</p>
+              <p>1. <span class="blue-text">迎風面</span> 1.25km 處，空氣塊的氣溫為 <input id="q4a1" class="inline-answer" type="number" step="0.1"> °C。</p>
+              <p>2. <span class="blue-text">迎風面</span> 4km 處，空氣塊的氣溫為 <input id="q4a2" class="inline-answer" type="number" step="0.1"> °C。</p>
+              <p>3. <span class="red-text">背風面</span> 0km 處，空氣塊的氣溫為 <input id="q4a3" class="inline-answer" type="number" step="0.1"> °C。</p>
+            </div>
+            <div class="q4page" data-page="1" style="display:none">
+              <h3>題目 4-b</h3>
+              <p>空氣塊翻越 4km 山頂後，下降至背風面山腳 0km 處，試問其運動過程中之氣溫變化率。</p>
+              <label>方向</label>
+              <div class="mini-grid"><button class="choice-btn q4choice" data-name="dir" data-value="上升">上升</button><button class="choice-btn q4choice" data-name="dir" data-value="下降">下降</button></div>
+              <label>空氣狀態</label>
+              <div class="mini-grid"><button class="choice-btn q4choice" data-name="state" data-value="飽和（濕）">飽和（濕）</button><button class="choice-btn q4choice" data-name="state" data-value="未飽和（乾）">未飽和（乾）</button></div>
+              <label>原因</label><textarea id="q4bReason"></textarea>
+            </div>
+            <div class="q4page" data-page="2" style="display:none">
+              <h3>題目 4-c</h3>
+              <p>當未飽和空氣塊由 4km 山頂處，下降到背風面山腳 0km 的過程中，氣溫會以每公里 10°C 的速率增加。試問空氣塊運動過程中發生了什麼變化，導致溫度上升？</p>
+              <textarea id="q4cReason"></textarea>
+            </div>
+            <div class="answer" id="q4Answer"></div>
+            <div class="nav-row">
+              <button class="small-btn" id="q4Prev">上一頁</button>
+              <button class="primary-btn" id="q4Next">下一頁</button>
+            </div>
+          </div>
+          <div class="viz q4-viz">
+            <div class="stats q4-data">
+              <div class="stat"><b>高度</b><span id="q4h">0 m</span></div>
+              <div class="stat"><b>空氣塊溫度</b><span id="q4temp">30.0°C</span></div>
+              <div class="stat"><b>露點</b><span id="q4dew">20.0°C</span></div>
+              <div class="stat"><b>狀態</b><span id="q4state">未飽和</span></div>
+            </div>
+            <div class="scene q4-scene">
+              <svg id="q4svg" viewBox="0 0 860 390" aria-label="焚風山坡">
+                <rect width="860" height="390" fill="#e8f8ff"/>
+                <g stroke="#c7c7c7" stroke-width="1">
+                  <path d="M110 50 V330 M210 50 V330 M310 50 V330 M410 50 V330 M510 50 V330 M610 50 V330 M710 50 V330"/>
+                  <path d="M110 90 H760 M110 150 H760 M110 210 H760 M110 270 H760 M110 330 H760"/>
+                </g>
+                <path d="M110 330 L210 330 L430 70 L650 330 L760 330 L760 360 L110 360 Z" fill="#eeeeee"/>
+                <path d="M110 330 L210 330 L430 70" fill="none" stroke="#3f80ff" stroke-width="5"/>
+                <path d="M430 70 L650 330 L760 330" fill="none" stroke="#ff2d2d" stroke-width="5"/>
+                <line x1="760" y1="330" x2="760" y2="70" stroke="#3f80ff" stroke-width="4"/>
+                <g fill="#31526b" font-size="15" font-weight="700"><text x="100" y="356">迎風面</text><text x="710" y="356" fill="#e32323">背風面</text><text x="770" y="42">高度</text><text x="770" y="62">(km)</text></g>
+                <g fill="#1f4e9e" font-size="15" font-weight="700">
+                  <text x="780" y="334">0</text><text x="780" y="274">1</text><text x="780" y="214">2</text><text x="780" y="154">3</text><text x="780" y="94">4</text>
+                </g>
+                <g id="q4Parcel" class="parcel"><circle id="q4Circle" r="22" fill="#f5b54c" stroke="#b27820" stroke-width="3"/><text text-anchor="middle" y="5" font-size="13" font-weight="800" fill="#573400">Air</text></g>
+              </svg>
+              <div class="range-row">
+                <input id="q4range" type="range" min="0" max="8000" step="1" value="0" />
+                <span>拖曳空氣塊或調整滑桿</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="module" data-module="4">
+        <div class="module-title">
+          <div>
+            <h2>題目 5｜變率挑戰：複雜情境推論</h2>
+            <div class="stage">第三階段：效應計算與極限推論（進階層次）</div>
+          </div>
+        </div>
+        <div class="pdf-board q5-board">
+          <div class="q5-left">
+            <div class="q5-question">
+              <h3>題目 5-a</h3>
+              <p>已知一氣溫 30°C 之空氣塊，若迎風面之雲底高度上升至 2km（較晚飽和），則背風面山腳 0km 處，溫度會如何變化？（空氣溫度變化率：飽和 6°C/km，未飽和 10°C/km）</p>
+              <textarea id="q5ans" placeholder="填入你的答案"></textarea>
+            </div>
+            <div class="operation-box q5-op">
+              <strong>操作指引：</strong>
+              <p>請將空氣塊沿著山坡拖曳，並觀察其空氣塊變化。</p>
+            </div>
+            <div class="q5-hints">
+              <strong>提示</strong>
+              <button class="small-btn hintBtn" id="q5HintBtn" data-hint="0">顯示提示</button>
+              <div class="hint">1. 地面到雲底飽和高度前為未飽和（乾）空氣。</div>
+              <div class="hint">2. 雲底飽和之後，空氣塊抬升到山頂。</div>
+              <div class="hint">3. 背風面下沉過程皆為未飽和（乾）空氣。</div>
+              <div class="hint">4. 注意增溫/降溫，飽和/未飽和空氣狀態。</div>
+            </div>
+            <div class="answer" id="q5Answer">參考答案：1. 30°C - (2km * 10°C/km) = 10°C。2. 10°C - (2km * 6°C/km) = -2°C。3. -2°C + (4km * 10°C/km) = 38°C。背風面山腳為 38°C，較題目 4 的 41°C 低 3°C。</div>
+            <div class="nav-row"><button class="primary-btn" id="q5Next">完成</button></div>
+          </div>
+          <div class="q5-graph">
+            <svg id="q5svg" viewBox="0 0 620 390" aria-label="雲底高度 2 公里情境">
+              <rect width="620" height="390" fill="#e8f8ff"/>
+              <g transform="translate(70 36)">
+                <g stroke="#c7c7c7" stroke-width="1">
+                  <path d="M40 30 V310 M110 30 V310 M180 30 V310 M250 30 V310 M320 30 V310 M390 30 V310 M460 30 V310"/>
+                  <path d="M40 70 H500 M40 130 H500 M40 190 H500 M40 250 H500 M40 310 H500"/>
+                </g>
+                <path d="M40 310 L110 310 L290 70 L430 310 L500 310 L500 340 L40 340 Z" fill="#eeeeee"/>
+                <path d="M40 310 L110 310 L290 70 L430 310 L500 310" fill="none" stroke="#747474" stroke-width="4"/>
+                <line x1="110" y1="190" x2="430" y2="190" stroke="#6aa8d8" stroke-width="2" stroke-dasharray="8 7"/>
+                <text x="118" y="178" font-size="14" fill="#1f6fb2" font-weight="800">雲底 2km</text>
+                <g id="q5Parcel" class="parcel" transform="translate(72 310)">
+                  <circle r="18" fill="#fff" stroke="#aaa" stroke-width="2"/>
+                  <text text-anchor="middle" y="-2" font-size="10" font-weight="800">空氣塊</text>
+                  <text text-anchor="middle" y="10" font-size="9">Air Mass</text>
+                </g>
+                <g fill="#2765b5" font-size="15" font-weight="700">
+                  <text x="15" y="314">0</text><text x="15" y="254">1</text><text x="15" y="194">2</text><text x="15" y="134">3</text><text x="15" y="74">4</text>
+                  <text x="-4" y="18">高度</text><text x="-4" y="38">(km)</text>
+                </g>
+              </g>
+            </svg>
+            <div class="range-row">
+              <input id="q5range" type="range" min="0" max="8000" step="50" value="0" />
+              <span>拖曳空氣塊或調整滑桿</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="creditsDialog">
+    <div class="modal-head">
+      <strong>製作人員名單</strong>
+      <button class="ghost-btn" id="closeCredits">關閉</button>
+    </div>
+    <div class="modal-body">
+      <div class="people">
+        <div>
+          <h3>試題、介面與腳本設計</h3>
+          <div class="person-row"><span>許舜婷 老師</span><span>新北市立新北高級中學</span></div>
+          <div class="person-row"><span>陳詩庭 老師</span><span>國立臺南女子高級中學</span></div>
+          <div class="person-row"><span>黃翊展 老師</span><span>高雄市立前鎮高級中學</span></div>
+          <div class="person-row"><span>陳其昌 老師</span><span>國立新竹科學園區實驗高級中等學校</span></div>
+        </div>
+        <div>
+          <h3>製作與技術指導</h3>
+          <div class="person-row"><span>楊芳瑩 教授</span><span>國立臺灣師範大學</span></div>
+          <div class="person-row"><span>簡士傑 先生</span><span>國立臺灣師範大學</span></div>
+        </div>
       </div>
     </div>
-    <script>
-
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Web.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/Web.data.unityweb",
-        frameworkUrl: buildUrl + "/Web.framework.js.unityweb",
-        codeUrl: buildUrl + "/Web.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Amanda",
-        productVersion: "0.1",
-        showBanner: unityShowBanner,
-      };
-
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
-    </script>
-  </body>
+  </dialog>
+  <script src="js/app.js"></script>
+</body>
 </html>
+
